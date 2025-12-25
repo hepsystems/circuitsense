@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CircuitSense Pro | Live AI Diagnostics</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Tailwind for layout utility, custom CSS for branding -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-950 text-slate-100 h-screen flex flex-col overflow-hidden">
+
+    <nav class="border-b border-slate-800 p-4 flex justify-between items-center bg-slate-900/50 backdrop-blur-md">
+        <div class="flex items-center gap-2">
+            <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center font-bold">C</div>
+            <span class="font-bold tracking-tight text-xl">CircuitSense <span class="text-blue-500 text-sm">PRO</span></span>
+        </div>
+        <div id="connection-status" class="flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800 text-xs font-medium text-slate-400">
+            <div class="status-dot w-2 h-2 rounded-full bg-red-500"></div>
+            OFFLINE
+        </div>
+    </nav>
+
+    <main class="flex-1 flex flex-col lg:flex-row">
+        <!-- Video Feed Section -->
+        <section class="flex-[2] relative bg-black flex items-center justify-center border-r border-slate-800">
+            <video id="camera-feed" autoplay playsinline muted class="w-full h-full object-cover opacity-60"></video>
+            
+            <!-- Scanning Overlay Effect -->
+            <div id="scan-line" class="hidden absolute top-0 left-0 w-full h-1 bg-blue-500/50 shadow-[0_0_15px_blue] z-10"></div>
+            
+            <div class="absolute inset-0 flex items-center justify-center flex-col gap-6" id="welcome-overlay">
+                <p class="text-slate-400 text-center max-w-md px-4">Position the camera over the circuit board and click "Initialize" to begin the AI diagnostic session.</p>
+                <button id="init-btn" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-4 px-10 rounded-full shadow-2xl transition-all active:scale-95">
+                    INITIALIZE LIVE SESSION
+                </button>
+            </div>
+
+            <div class="absolute bottom-8 flex gap-3 hidden" id="control-bar">
+                <button id="stop-btn" class="bg-red-600/20 hover:bg-red-600 border border-red-600/50 text-white px-6 py-2 rounded-lg font-medium transition-all">
+                    Termiate Session
+                </button>
+            </div>
+        </section>
+
+        <!-- Intelligence Sidebar -->
+        <section class="flex-1 bg-slate-900 flex flex-col overflow-hidden">
+            <div class="p-4 border-b border-slate-800 flex justify-between items-center">
+                <h2 class="text-xs font-bold text-slate-500 uppercase tracking-widest">Diagnostic Logs</h2>
+                <span id="latency" class="text-[10px] text-slate-600">-- ms</span>
+            </div>
+            
+            <div id="chat-container" class="flex-1 overflow-y-auto p-4 space-y-4 text-sm scrollbar-thin scrollbar-thumb-slate-700">
+                <div class="ai-bubble bg-slate-800 p-4 rounded-xl border-l-4 border-blue-500">
+                    <p class="text-slate-300">Awaiting visual input. Please ensure lighting is sufficient for component identification.</p>
+                </div>
+            </div>
+
+            <div class="p-4 bg-slate-800/50 border-t border-slate-700">
+                <div class="flex items-center gap-3 text-xs text-slate-400">
+                    <div class="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+                    AI is analyzing frames...
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <canvas id="frame-processor" class="hidden"></canvas>
+    <script src="app.js"></script>
+</body>
+</html>
